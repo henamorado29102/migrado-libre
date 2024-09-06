@@ -22,7 +22,7 @@ export class ProductsComponent {
   ngOnInit() {
     this.mercadoService.getProducts().then(products => {
       this.products = products;
-      //this.cdr.detectChanges();
+      this.cdr.detectChanges();
     });
   }
 
