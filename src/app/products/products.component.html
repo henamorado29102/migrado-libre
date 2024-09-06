@@ -1,0 +1,13 @@
+<h1>Products!</h1>
+<div class="product-grid">
+  @for (product of paginatedProducts; track $index) {
+  <app-product [product]="product"></app-product>
+  }
+</div>
+
+<app-paginate
+  [items]="products"
+  [itemsPerPage]="10"
+  (paginatedItems)="onPaginatedProducts($event)"
+>
+</app-paginate>
