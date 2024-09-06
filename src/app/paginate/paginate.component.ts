@@ -1,51 +1,42 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
-  selector: 'app-paginate',
+  selector: 'app-paginate', 
+  templateUrl: './paginate.component.html',
   standalone: true,
   imports: [],
-  templateUrl: './paginate.component.html',
-  styleUrl: './paginate.component.css',
+  styleUrls: ['./paginate.component.css']
 })
-export class PaginateComponent<T> {
-  @Input() items: T[] = []; // The array of items (generic type)
-  @Input() itemsPerPage: number = 10; // Number of items per page
+export class PaginateComponent implements OnChanges {
+  @Input() totalItems: number = 0; 
+  @Input() itemsPerPage = 10; 
+  @Output() paginatedItems = new EventEmitter<any[]>();  
 
-  @Output() paginatedItems: EventEmitter<T[]> = new EventEmitter<T[]>(); // Emit paginated items
-  @Output() currentPageChange: EventEmitter<number> =
-    new EventEmitter<number>(); // Emit current page number
+  currentPage = 1;
+  totalPages = 1;
 
-  currentPage: number = 1;
-  totalPages: number = 1;
-
-  constructor() {}
-
-  ngOnChanges(): void {
-    this.totalPages = Math.ceil(this.items.length / this.itemsPerPage);
-    this.paginate(this.currentPage);
+  ngOnChanges(): void {   
+      this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+      this.updatePage();  
   }
 
-  paginate(page: number): void {
-    this.currentPage = page;
-    const startIndex = (page - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    const pageItems = this.items.slice(startIndex, endIndex);
-
-    this.paginatedItems.emit(pageItems); // Emit the paginated data
-    this.currentPageChange.emit(this.currentPage); // Emit the current page number
+  updatePage(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = this.currentPage * this.itemsPerPage;
+    this.paginatedItems.emit([start, end]);
   }
 
-  // Navigate to the next page
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
-      this.paginate(this.currentPage + 1);
+      this.currentPage++;
+      this.updatePage();
     }
   }
 
-  // Navigate to the previous page
-  prevPage(): void {
+  previousPage(): void {
     if (this.currentPage > 1) {
-      this.paginate(this.currentPage - 1);
+      this.currentPage--;
+      this.updatePage();
     }
   }
 }

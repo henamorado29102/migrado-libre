@@ -6,8 +6,8 @@
 </div>
 
 <app-paginate
-  [items]="products"
-  [itemsPerPage]="10"
-  (paginatedItems)="onPaginatedProducts($event)"
+  [totalItems]="products.length"
+  [itemsPerPage]="limit"
+  (paginatedItems)="onPaginatedProducts($event[0], $event[1])"
 >
 </app-paginate>

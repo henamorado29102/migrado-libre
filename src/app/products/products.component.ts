@@ -8,27 +8,26 @@ import { PaginateComponent } from '../paginate/paginate.component';
   standalone: true,
   imports: [ProductComponent, PaginateComponent],
   templateUrl: './products.component.html',
-  styleUrl: './products.component.css'
+  styleUrl: './products.component.css',
 })
 export class ProductsComponent {
-  products: Product[] = []
+  products: Product[] = [];
   paginatedProducts: Product[] = [];
 
-
-  constructor(public marketService: MarketService, private cdr: ChangeDetectorRef){
-  
-  }
+  limit: number = 8;
+  constructor(
+    public marketService: MarketService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit() {
-    this.marketService.getProducts().then(products => {
+    this.marketService.getProducts().then((products) => {
       this.products = products;
-      this.cdr.detectChanges();
     });
   }
 
-  onPaginatedProducts(paginated: Product[]): void {
-    console.log(paginated)
-    this.paginatedProducts = paginated;
+  onPaginatedProducts(start: number,  end: number): void {
+    this.paginatedProducts = this.products.slice(start, end);
+    this.cdr.detectChanges();
   }
-
 }
