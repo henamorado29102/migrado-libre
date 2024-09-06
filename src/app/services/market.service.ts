@@ -3,7 +3,7 @@ import { Product } from '../models/product';
 @Injectable({
   providedIn: 'root'
 })
-export class MercadoService {
+export class MarketService {
 
   constructor() {
     

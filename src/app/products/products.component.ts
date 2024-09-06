@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component } from '@angular/core';
-import { MercadoService } from '../services/mercado.service';
+import { MarketService } from '../services/market.service';
 import { Product } from '../models/product';
 import { ProductComponent } from '../product/product.component';
 import { PaginateComponent } from '../paginate/paginate.component';
@@ -15,12 +15,12 @@ export class ProductsComponent {
   paginatedProducts: Product[] = [];
 
 
-  constructor(public mercadoService: MercadoService, private cdr: ChangeDetectorRef){
+  constructor(public marketService: MarketService, private cdr: ChangeDetectorRef){
   
   }
 
   ngOnInit() {
-    this.mercadoService.getProducts().then(products => {
+    this.marketService.getProducts().then(products => {
       this.products = products;
       this.cdr.detectChanges();
     });
